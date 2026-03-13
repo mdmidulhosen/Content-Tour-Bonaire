@@ -16,6 +16,8 @@ module.exports = {
         subTitle: "#D5D5D5",
         green: "#0D4959",
         green100: "#ECFBFF",
+        secondary: "#f4fefc",
+        dark: "#121212",
       },
     },
   },

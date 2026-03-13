@@ -2,6 +2,7 @@ import { IconCloseEye, IconLock, IconMail, IconOpenEye } from "@/assets/icons";
 import Button from "@/components/Button";
 import InputText from "@/components/InputText";
 import tw from "@/lib/tw";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -12,6 +13,7 @@ import {
 } from "react-native";
 
 const Login = () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   return (
     <KeyboardAvoidingView
@@ -47,7 +49,7 @@ const Login = () => {
                 iconAfter={showPassword ? IconOpenEye : IconCloseEye}
               />
             </View>
-            <Button title="Log in" onPress={() => {}} />
+            <Button title="Log in" onPress={() => router.push("/home")} />
           </View>
         </ScrollView>
       </View>
