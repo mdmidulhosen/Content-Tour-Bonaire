@@ -96,11 +96,11 @@ const AudioPlayer = ({
           maximumTrackTintColor="#FFF4F7"
           thumbTintColor="#FDA5BD"
         />
-        <View style={tw`flex-row justify-between mt-1`}>
-          <Text style={tw`text-subTitle text-xs font-poppins`}>
+        <View style={tw`flex-row justify-between mt-2`}>
+          <Text style={tw`text-secondary100 text-xs font-poppins`}>
             {formatTime(position)}
           </Text>
-          <Text style={tw`text-subTitle text-xs font-poppins`}>
+          <Text style={tw`text-secondary100 text-xs font-poppins`}>
             {formatTime(duration)}
           </Text>
         </View>

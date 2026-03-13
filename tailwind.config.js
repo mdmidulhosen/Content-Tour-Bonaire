@@ -18,6 +18,7 @@ module.exports = {
         green100: "#ECFBFF",
         secondary: "#f4fefc",
         dark: "#121212",
+        secondary100: "#979797",
       },
     },
   },

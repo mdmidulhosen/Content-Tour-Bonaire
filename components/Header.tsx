@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <View
       style={[
-        tw`flex-row items-center bg-white py-4`,
+        tw`flex-row items-center bg-white py-4 px-4`,
         {
           shadowColor: "#D3D3D3",
           shadowOffset: { width: 0, height: 2 },
@@ -19,7 +19,7 @@ const Header = () => {
       ]}
     >
       <View style={tw`flex-row items-center gap-2 flex-1`}>
-        <TouchableOpacity style={tw`px-2`}>
+        <TouchableOpacity style={tw`pr-2`}>
           <SvgXml xml={IconLeftArrow} />
         </TouchableOpacity>
 
