@@ -1,14 +1,30 @@
+import { IconCar } from "@/assets/icons";
 import AudioPlayer from "@/components/AudioPlayer";
 import Header from "@/components/Header";
 import tw from "@/lib/tw";
+import * as Location from "expo-location";
 import LottieView from "lottie-react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import { SvgXml } from "react-native-svg";
 
 const Home = () => {
   const lottieRef = useRef<LottieView>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.getForegroundPermissionsAsync();
+      if (status !== "granted") return;
+      const current = await Location.getCurrentPositionAsync({});
+      setLocation({
+        latitude: current.coords.latitude,
+        longitude: current.coords.longitude,
+      });
+    })();
+  }, []);
 
   const handlePlayingChange = (playing: boolean) => {
     setIsPlaying(playing);
@@ -61,13 +77,18 @@ const Home = () => {
             <MapView
               provider={PROVIDER_GOOGLE}
               style={tw`w-full h-86`}
-              initialRegion={{
-                latitude: 12.1784,
-                longitude: -68.2385,
-                latitudeDelta: 0.05,
-                longitudeDelta: 0.05,
-              }}
-            />
+              region={
+                location
+                  ? { ...location, latitudeDelta: 0.01, longitudeDelta: 0.01 }
+                  : { latitude: 12.1784, longitude: -68.2385, latitudeDelta: 0.05, longitudeDelta: 0.05 }
+              }
+            >
+              {location && (
+                <Marker coordinate={location}>
+                  <SvgXml xml={IconCar} width={40} height={40} />
+                </Marker>
+              )}
+            </MapView>
           </View>
         </View>
       </ScrollView>
