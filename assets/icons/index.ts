@@ -114,3 +114,8 @@ export const IconShapeClose = `<svg width="48" height="48" viewBox="0 0 48 48" f
 </defs>
 </svg>
 `;
+
+export const IconPlay = `<svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 17.5L13.75 8.75L0 0V17.5ZM2.5 12.9375V4.5625L9.0625 8.75L2.5 12.9375Z" fill="#0D4959"/>
+</svg>
+`;

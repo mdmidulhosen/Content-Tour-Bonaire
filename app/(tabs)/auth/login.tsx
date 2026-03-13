@@ -12,9 +12,11 @@ import {
   Text,
   View,
 } from "react-native";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   return (
     <KeyboardAvoidingView
@@ -29,21 +31,21 @@ const Login = () => {
         >
           <View style={tw`w-full`}>
             <Text style={tw`text-green text-2xl font-poppins-bold text-center`}>
-              Log in
+              {t("login.title")}
             </Text>
             <Text style={tw`text-green text-sm font-poppins text-center mt-3`}>
-              Enter correct information to access your account
+              {t("login.subtitle")}
             </Text>
 
             <View style={tw`gap-6 mt-16 w-full`}>
               <InputText
-                label="Email"
-                placeholderText="Enter your email"
+                label={t("login.emailLabel")}
+                placeholderText={t("login.emailPlaceholder")}
                 iconBefore={IconMail}
               />
               <InputText
-                label="Password"
-                placeholderText="Enter your password"
+                label={t("login.passwordLabel")}
+                placeholderText={t("login.passwordPlaceholder")}
                 iconBefore={IconLock}
                 secureTextEntry={!showPassword}
                 IconRightPress={() => setShowPassword((prev) => !prev)}
@@ -51,7 +53,7 @@ const Login = () => {
               />
             </View>
             <Button
-              title="Log in"
+              title={t("login.button")}
               onPress={async () => {
                 await Location.requestForegroundPermissionsAsync();
                 router.push("/home");

@@ -3,6 +3,7 @@ import AudioPlayer from "@/components/AudioPlayer";
 import BlurModal from "@/components/BlurModal";
 import Button from "@/components/Button";
 import Header from "@/components/Header";
+import { useLanguage } from "@/context/LanguageContext";
 import tw from "@/lib/tw";
 import * as Location from "expo-location";
 import LottieView from "lottie-react-native";
@@ -10,13 +11,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { SvgXml } from "react-native-svg";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
+  const { t } = useTranslation();
+  const { selectedLanguage, setLanguage, languages } = useLanguage();
   const lottieRef = useRef<LottieView>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState("Dutch");
-  const languages = ["Dutch", "English", "Spanish"];
+  const [pendingLanguage, setPendingLanguage] = useState(selectedLanguage);
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -45,7 +48,7 @@ const Home = () => {
 
   return (
     <View style={tw`bg-secondary h-full pb-4`}>
-      <Header handleLanguage={() => setIsLanguageModalOpen(true)} />
+      <Header handleLanguage={() => { setPendingLanguage(selectedLanguage); setIsLanguageModalOpen(true); }} />
       <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
         <View style={tw`px-[4%] `}>
           <View style={tw`items-center`}>
@@ -57,7 +60,7 @@ const Home = () => {
               style={tw`w-36 h-36`}
             />
             <Text style={tw`text-dark text-sm font-poppins`}>
-              {isPlaying ? "Speaking..." : "Paused"}
+              {isPlaying ? t("home.speaking") : t("home.paused")}
             </Text>
           </View>
 
@@ -75,8 +78,8 @@ const Home = () => {
           >
             <AudioPlayer
               source={require("@/assets/audio/voice-1.mp3")}
-              title="Spot Name"
-              description="Spot description - dolor sit amet ectetur. Tellus enim adipiscing corper pretium corper in."
+              title={t("home.spotName")}
+              description={t("home.spotDescription")}
               onPlayingChange={handlePlayingChange}
             />
           </View>
@@ -112,7 +115,7 @@ const Home = () => {
           <View>
             <View style={tw`flex-row items-center justify-between`}>
               <Text style={tw`text-green text-[20px] font-poppins-semibold`}>
-                Select Language
+                {t("home.selectLanguage")}
               </Text>
               <TouchableOpacity onPress={() => setIsLanguageModalOpen(false)}>
                 <SvgXml xml={IconShapeClose} />
@@ -121,11 +124,11 @@ const Home = () => {
 
             <View style={tw`mt-4 gap-y-4`}>
               {languages.map((lang) => {
-                const isSelected = selectedLanguage === lang;
+                const isSelected = pendingLanguage === lang;
                 return (
                   <TouchableOpacity
                     key={lang}
-                    onPress={() => setSelectedLanguage(lang)}
+                    onPress={() => setPendingLanguage(lang)}
                     style={tw`flex-row items-center gap-3`}
                   >
                     <View
@@ -149,8 +152,8 @@ const Home = () => {
             </View>
 
             <Button
-              title="Select"
-              onPress={() => setIsLanguageModalOpen(false)}
+              title={t("home.select")}
+              onPress={() => { setLanguage(pendingLanguage); setIsLanguageModalOpen(false); }}
               textStyle={tw`text-white`}
             />
           </View>

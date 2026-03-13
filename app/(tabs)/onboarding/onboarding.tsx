@@ -4,12 +4,20 @@ import tw from "@/lib/tw";
 import { BlurView } from "expo-blur";
 import { useRouter } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ImageBackground, Text, View } from "react-native";
 import { SvgXml } from "react-native-svg";
 
 const Onboarding = () => {
   const router = useRouter();
-  const list = ["GPS Navigation", "Auto-Play Stories", "Virtual Guide"];
+  const { t } = useTranslation();
+
+  const list = [
+    t("onboarding.features.gps"),
+    t("onboarding.features.autoPlay"),
+    t("onboarding.features.virtualGuide"),
+  ];
+
   return (
     <ImageBackground
       source={require("@/assets/images/boarding-banner.jpg")}
@@ -21,11 +29,10 @@ const Onboarding = () => {
         style={tw`overflow-hidden rounded-t-3xl px-[4%] pt-6`}
       >
         <Text style={tw`text-white text-[28px] font-poppins-bold mb-4`}>
-          Your Experience Awaits
+          {t("onboarding.title")}
         </Text>
         <Text style={tw`text-subTitle text-base font-poppins-regular mb-6`}>
-          Our virtual guide will automatically share fascinating stories &
-          historical facts as you travel along the island.
+          {t("onboarding.description")}
         </Text>
 
         <View style={tw`gap-y-4 mb-4`}>
@@ -41,7 +48,7 @@ const Onboarding = () => {
           ))}
         </View>
         <Button
-          title="Start your tour"
+          title={t("onboarding.startTour")}
           iconBefore={IconPlay}
           onPress={() => router.push("/auth/login")}
         />
