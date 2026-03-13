@@ -1,10 +1,10 @@
-import { IconGear, IconLeftArrow } from "@/assets/icons";
+import { IconGear, IconLanguage, IconLeftArrow } from "@/assets/icons";
 import tw from "@/lib/tw";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { SvgXml } from "react-native-svg";
 
-const Header = () => {
+const Header = ({ handleLanguage }: { handleLanguage: () => void }) => {
   return (
     <View
       style={[
@@ -27,9 +27,14 @@ const Header = () => {
           CONTENTOUR BONAIRE
         </Text>
       </View>
-      <TouchableOpacity style={tw`px-2`}>
-        <SvgXml xml={IconGear} />
-      </TouchableOpacity>
+      <View style={tw`gap-1 flex-row items-center`}>
+        <TouchableOpacity style={tw`px-2`} onPress={handleLanguage}>
+          <SvgXml xml={IconLanguage} />
+        </TouchableOpacity>
+        <TouchableOpacity style={tw`px-2`}>
+          <SvgXml xml={IconGear} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

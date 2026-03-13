@@ -1,18 +1,26 @@
-import { IconCar } from "@/assets/icons";
+import { IconCar, IconShapeClose } from "@/assets/icons";
 import AudioPlayer from "@/components/AudioPlayer";
+import BlurModal from "@/components/BlurModal";
+import Button from "@/components/Button";
 import Header from "@/components/Header";
 import tw from "@/lib/tw";
 import * as Location from "expo-location";
 import LottieView from "lottie-react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { SvgXml } from "react-native-svg";
 
 const Home = () => {
   const lottieRef = useRef<LottieView>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState("Dutch");
+  const languages = ["Dutch", "English", "Spanish"];
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -37,7 +45,7 @@ const Home = () => {
 
   return (
     <View style={tw`bg-secondary h-full pb-4`}>
-      <Header />
+      <Header handleLanguage={() => setIsLanguageModalOpen(true)} />
       <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
         <View style={tw`px-[4%] `}>
           <View style={tw`items-center`}>
@@ -80,7 +88,12 @@ const Home = () => {
               region={
                 location
                   ? { ...location, latitudeDelta: 0.01, longitudeDelta: 0.01 }
-                  : { latitude: 12.1784, longitude: -68.2385, latitudeDelta: 0.05, longitudeDelta: 0.05 }
+                  : {
+                      latitude: 12.1784,
+                      longitude: -68.2385,
+                      latitudeDelta: 0.05,
+                      longitudeDelta: 0.05,
+                    }
               }
             >
               {location && (
@@ -92,6 +105,57 @@ const Home = () => {
           </View>
         </View>
       </ScrollView>
+      <BlurModal
+        open={isLanguageModalOpen}
+        onClose={() => setIsLanguageModalOpen(false)}
+        content={
+          <View>
+            <View style={tw`flex-row items-center justify-between`}>
+              <Text style={tw`text-green text-[20px] font-poppins-semibold`}>
+                Select Language
+              </Text>
+              <TouchableOpacity onPress={() => setIsLanguageModalOpen(false)}>
+                <SvgXml xml={IconShapeClose} />
+              </TouchableOpacity>
+            </View>
+
+            <View style={tw`mt-4 gap-y-4`}>
+              {languages.map((lang) => {
+                const isSelected = selectedLanguage === lang;
+                return (
+                  <TouchableOpacity
+                    key={lang}
+                    onPress={() => setSelectedLanguage(lang)}
+                    style={tw`flex-row items-center gap-3`}
+                  >
+                    <View
+                      style={[
+                        tw`w-6 h-6 rounded-full border-2 items-center justify-center`,
+                        { borderColor: isSelected ? "#FDA5BD" : "#D9D9D9" },
+                      ]}
+                    >
+                      {isSelected && (
+                        <View style={tw`w-3 h-3 rounded-full bg-primary`} />
+                      )}
+                    </View>
+                    <Text
+                      style={tw`text-base font-poppins-medium ${isSelected ? "text-primary" : "text-green"}`}
+                    >
+                      {lang}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+
+            <Button
+              title="Select"
+              onPress={() => setIsLanguageModalOpen(false)}
+              textStyle={tw`text-white`}
+            />
+          </View>
+        }
+      />
     </View>
   );
 };
